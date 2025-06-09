@@ -82,11 +82,6 @@ export function getUsuarioById(id: string): Usuario | undefined {
   return usuariosData.find((usuario) => usuario.id === id)
 }
 
-// Añadir la función getUsuarioByEmail
-export function getUsuarioByEmail(email: string): Usuario | undefined {
-  return usuariosData.find((usuario) => usuario.email === email)
-}
-
 export function getUsuariosActivos(): Usuario[] {
   return usuariosData.filter((usuario) => usuario.activo)
 }

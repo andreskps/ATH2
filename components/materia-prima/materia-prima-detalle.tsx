@@ -10,9 +10,6 @@ import { formatDate } from "@/lib/utils"
 import { CrearOrdenCompraDialog } from "./crear-orden-compra-dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Star } from "lucide-react"
-import { AnadirProveedorDialog } from "./anadir-proveedor-dialog"
-import { Plus, MoreHorizontal, Trash } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 interface MateriaPrimaDetalleProps {
   materiaPrima: MateriaPrima
@@ -47,19 +44,6 @@ export function MateriaPrimaDetalle({ materiaPrima }: MateriaPrimaDetalleProps) 
   }, [materiaPrima.id])
 
   const isLowStock = stockTotal <= materiaPrima.stockMinimo
-
-  const handleEliminarProveedor = async (proveedorId: string) => {
-    if (confirm("¿Está seguro de que desea eliminar este proveedor?")) {
-      try {
-        // Aquí iría la lógica para eliminar la relación proveedor-materia prima
-        alert("Proveedor eliminado correctamente")
-        // Refrescar datos
-      } catch (error) {
-        console.error("Error al eliminar proveedor:", error)
-        alert("Error al eliminar el proveedor")
-      }
-    }
-  }
 
   return (
     <div className="space-y-6">
@@ -138,27 +122,18 @@ export function MateriaPrimaDetalle({ materiaPrima }: MateriaPrimaDetalleProps) 
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader>
           <CardTitle>Proveedores</CardTitle>
-          <AnadirProveedorDialog materiaPrima={materiaPrima}>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              Añadir Proveedor
-            </Button>
-          </AnadirProveedorDialog>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="flex justify-center py-4">Cargando proveedores...</div>
           ) : proveedores.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8 text-center">
-              <p className="text-muted-foreground mb-4">No hay proveedores registrados para esta materia prima.</p>
-              <AnadirProveedorDialog materiaPrima={materiaPrima}>
-                <Button variant="outline">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Añadir Primer Proveedor
-                </Button>
-              </AnadirProveedorDialog>
+              <p className="text-muted-foreground">No hay proveedores registrados para esta materia prima.</p>
+              <Button variant="outline" className="mt-4">
+                Agregar Proveedor
+              </Button>
             </div>
           ) : (
             <div className="rounded-md border">
@@ -167,11 +142,10 @@ export function MateriaPrimaDetalle({ materiaPrima }: MateriaPrimaDetalleProps) 
                   <TableRow>
                     <TableHead>Proveedor</TableHead>
                     <TableHead>Precio ({materiaPrima.unidadMedida})</TableHead>
-                    <TableHead>Referencia</TableHead>
                     <TableHead>Tiempo de Entrega</TableHead>
                     <TableHead>Calidad</TableHead>
+                    <TableHead>Última Compra</TableHead>
                     <TableHead>Preferido</TableHead>
-                    <TableHead className="text-right">Acciones</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -179,7 +153,6 @@ export function MateriaPrimaDetalle({ materiaPrima }: MateriaPrimaDetalleProps) 
                     <TableRow key={proveedor.id}>
                       <TableCell className="font-medium">{proveedor.proveedorNombre}</TableCell>
                       <TableCell>${proveedor.precio.toFixed(2)}</TableCell>
-                      <TableCell>{proveedor.referencia || "No especificada"}</TableCell>
                       <TableCell>{proveedor.tiempoEntrega}</TableCell>
                       <TableCell>
                         <Badge
@@ -195,27 +168,14 @@ export function MateriaPrimaDetalle({ materiaPrima }: MateriaPrimaDetalleProps) 
                         </Badge>
                       </TableCell>
                       <TableCell>
+                        {proveedor.ultimaCompra ? formatDate(proveedor.ultimaCompra) : "No disponible"}
+                      </TableCell>
+                      <TableCell>
                         {proveedor.esPreferido ? (
                           <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                         ) : (
                           <Star className="h-5 w-5 text-muted-foreground" />
                         )}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Acciones</span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => handleEliminarProveedor(proveedor.id)}>
-                              <Trash className="mr-2 h-4 w-4" />
-                              Eliminar relación
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
                       </TableCell>
                     </TableRow>
                   ))}
