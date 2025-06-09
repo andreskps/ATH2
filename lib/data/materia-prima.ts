@@ -17,6 +17,7 @@ export interface ProveedorMateriaPrima {
   proveedorId: string
   proveedorNombre: string
   precio: number
+  referencia?: string // Añadir este campo
   tiempoEntrega: string
   calidad: "Alta" | "Media" | "Baja"
   observaciones?: string
@@ -151,6 +152,7 @@ export const proveedoresMateriaPrima: ProveedorMateriaPrima[] = [
     proveedorId: "prov-001",
     proveedorNombre: "Polímeros Industriales S.A.",
     precio: 2.5,
+    referencia: "HDPE-PREMIUM-001",
     tiempoEntrega: "5 días",
     calidad: "Alta",
     esPreferido: true,

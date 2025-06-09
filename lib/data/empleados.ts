@@ -18,6 +18,10 @@ const empleadosData: Empleado[] = [
     foto: "/stylized-jp-initials.png",
     turno: "Mañana",
     tipoContrato: "Indefinido",
+    tallaCamiseta: "L",
+    tallaPantalon: "34",
+    tallaCalzado: "42",
+    tallaChaqueta: "L",
   },
   {
     id: 2,
@@ -33,6 +37,10 @@ const empleadosData: Empleado[] = [
     email: "maria.lopez@athplasticos.com",
     foto: "/machine-learning-concept.png",
     turno: "Tarde",
+    tallaCamiseta: "M",
+    tallaPantalon: "30",
+    tallaCalzado: "38",
+    tallaChaqueta: "M",
   },
   {
     id: 3,
@@ -48,6 +56,10 @@ const empleadosData: Empleado[] = [
     telefono: "6012345678",
     foto: "/abstract-geometric-shapes.png",
     tipoContrato: "Temporal",
+    tallaCamiseta: "XL",
+    tallaPantalon: "36",
+    tallaCalzado: "43",
+    tallaChaqueta: "XL",
   },
   {
     id: 4,
@@ -65,6 +77,10 @@ const empleadosData: Empleado[] = [
     foto: "/abstract-am.png",
     turno: "Rotativo",
     tipoContrato: "Indefinido",
+    tallaCamiseta: "S",
+    tallaPantalon: "28",
+    tallaCalzado: "37",
+    tallaChaqueta: "S",
   },
   {
     id: 5,
@@ -80,6 +96,10 @@ const empleadosData: Empleado[] = [
     foto: "/abstract-color-run.png",
     turno: "Noche",
     tipoContrato: "Temporal",
+    tallaCamiseta: "M",
+    tallaPantalon: "32",
+    tallaCalzado: "41",
+    tallaChaqueta: "M",
   },
 ]
 

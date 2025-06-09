@@ -23,6 +23,7 @@ import {
   Workflow,
   Activity,
   Shirt,
+  Settings,
 } from "lucide-react"
 
 export default function Sidebar() {
@@ -220,6 +221,16 @@ export default function Sidebar() {
             >
               <Users className="h-4 w-4" />
               <span className="hidden group-hover:inline-block md:inline-block">Empleados</span>
+            </Link>
+            <Link
+              href="/configuracion"
+              className={cn(
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                pathname?.startsWith("/configuracion") && "bg-muted text-primary",
+              )}
+            >
+              <Settings className="h-4 w-4" />
+              <span className="hidden group-hover:inline-block md:inline-block">Configuración</span>
             </Link>
             <Link
               href="/admin/roles"
