@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import type { OrdenCompra } from "@/lib/data/ordenes-compra"
 import { Badge } from "@/components/ui/badge"
+import { ProveedorAutocomplete } from "./proveedor-autocomplete"
 
 // Simulación de datos de proveedores
 const proveedores = [
@@ -182,18 +183,11 @@ export function OrdenCompraForm({ ordenCompra, initialData, isEditing = false }:
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="proveedor">Proveedor</Label>
-                <Select value={proveedorId} onValueChange={setProveedorId}>
-                  <SelectTrigger id="proveedor">
-                    <SelectValue placeholder="Seleccionar proveedor" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {proveedores.map((proveedor) => (
-                      <SelectItem key={proveedor.id} value={proveedor.id}>
-                        {proveedor.nombre}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <ProveedorAutocomplete
+                  value={proveedorId}
+                  onValueChange={setProveedorId}
+                  placeholder="Seleccionar proveedor"
+                />
               </div>
 
               <div className="space-y-2">
@@ -264,10 +258,12 @@ export function OrdenCompraForm({ ordenCompra, initialData, isEditing = false }:
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Guardando...
+                    {isEditing ? "Actualizando..." : "Guardando..."}
                   </>
+                ) : isEditing ? (
+                  "Actualizar Orden de Compra"
                 ) : (
-                  "Guardar Orden de Compra"
+                  "Crear Orden de Compra"
                 )}
               </Button>
             </CardFooter>

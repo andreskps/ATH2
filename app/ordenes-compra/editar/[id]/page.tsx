@@ -15,14 +15,15 @@ export default async function EditarOrdenCompraPage({ params }: EditarOrdenCompr
     notFound()
   }
 
-  // Verificar si la orden puede ser editada
-  if (ordenCompra.estado === "recibido" || ordenCompra.estado === "cerrado") {
+  // Actualizar la validación para permitir editar solo órdenes en estado "creada":
+  if (ordenCompra.estado !== "creada") {
     return (
       <div className="container py-6">
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <h1 className="text-2xl font-bold mb-4">No se puede editar esta orden</h1>
           <p className="text-muted-foreground mb-6">
-            Las órdenes de compra en estado &quot;{ordenCompra.estado}&quot; no pueden ser editadas.
+            Solo las órdenes de compra en estado "creada" pueden ser editadas. Esta orden está en estado "
+            {ordenCompra.estado}".
           </p>
           <a href="/ordenes-compra" className="text-primary hover:underline">
             Volver a la lista de órdenes de compra

@@ -6,41 +6,52 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import type { OrdenCompra } from "@/lib/data/ordenes-compra"
 import { formatCurrency, formatDate } from "@/lib/utils"
-import { AlertCircle, Calendar, FileEdit, Truck, User, X } from "lucide-react"
+// Importar Check icon
+import { AlertCircle, Calendar, FileEdit, Truck, User, X, Check } from "lucide-react"
 import Link from "next/link"
+
+// Importar el nuevo componente stepper
+import { OrdenCompraStepper } from "./orden-compra-stepper"
+
+// Importar el nuevo componente de confirmación
+import { ConfirmarOrdenDialog } from "./confirmar-orden-dialog"
 
 interface OrdenCompraDetalleProps {
   orden: OrdenCompra
 }
 
 export function OrdenCompraDetalle({ orden }: OrdenCompraDetalleProps) {
-  // Función para obtener el color de la badge según el estado
+  // Actualizar la función getBadgeVariant para incluir "confirmada"
   const getBadgeVariant = (estado: string) => {
     switch (estado) {
-      case "creado":
+      case "creada":
         return "outline"
-      case "recibido-parcial":
+      case "confirmada":
         return "secondary"
-      case "recibido":
+      case "recibida-parcial":
+        return "secondary"
+      case "recibida":
         return "default"
-      case "cerrado":
+      case "cerrada":
         return "destructive"
       default:
         return "outline"
     }
   }
 
-  // Función para formatear el estado para mostrar
+  // Actualizar la función formatearEstado para incluir "confirmada"
   const formatearEstado = (estado: string) => {
     switch (estado) {
-      case "creado":
-        return "Creado"
-      case "recibido-parcial":
-        return "Recibido Parcial"
-      case "recibido":
-        return "Recibido"
-      case "cerrado":
-        return "Cerrado"
+      case "creada":
+        return "Creada"
+      case "confirmada":
+        return "Confirmada"
+      case "recibida-parcial":
+        return "Recibida Parcial"
+      case "recibida":
+        return "Recibida"
+      case "cerrada":
+        return "Cerrada"
       default:
         return estado
     }
@@ -67,6 +78,9 @@ export function OrdenCompraDetalle({ orden }: OrdenCompraDetalleProps) {
           </AlertDescription>
         </Alert>
       )}
+
+      {/* Stepper de estados */}
+      <OrdenCompraStepper estadoActual={orden.estado} />
 
       {/* Información general de la orden */}
       <Card>
@@ -119,8 +133,8 @@ export function OrdenCompraDetalle({ orden }: OrdenCompraDetalleProps) {
               <div className="pt-2">
                 {/* Botones de acción según el estado */}
                 <div className="flex flex-wrap gap-2">
-                  {/* Solo mostrar editar si no está recibido o cerrado */}
-                  {["creado", "recibido-parcial"].includes(orden.estado) && (
+                  {/* Solo mostrar editar si está en estado "creada" */}
+                  {orden.estado === "creada" && (
                     <Link href={`/ordenes-compra/editar/${orden.id}`}>
                       <Button className="flex items-center">
                         <FileEdit className="mr-2 h-4 w-4" />
@@ -129,8 +143,18 @@ export function OrdenCompraDetalle({ orden }: OrdenCompraDetalleProps) {
                     </Link>
                   )}
 
-                  {/* Solo mostrar registrar recepción si no está recibido o cerrado */}
-                  {["creado", "recibido-parcial"].includes(orden.estado) && (
+                  {/* Mostrar confirmar si está en estado "creada" */}
+                  {orden.estado === "creada" && (
+                    <ConfirmarOrdenDialog ordenId={orden.id} numeroOrden={orden.numero}>
+                      <Button variant="secondary" className="flex items-center">
+                        <Check className="mr-2 h-4 w-4" />
+                        Confirmar Orden
+                      </Button>
+                    </ConfirmarOrdenDialog>
+                  )}
+
+                  {/* Solo mostrar registrar recepción si está confirmada o recibida parcial */}
+                  {["confirmada", "recibida-parcial"].includes(orden.estado) && (
                     <Link href={`/ordenes-compra/recepciones/nueva?ordenCompraId=${orden.id}`}>
                       <Button variant="secondary" className="flex items-center">
                         <Truck className="mr-2 h-4 w-4" />

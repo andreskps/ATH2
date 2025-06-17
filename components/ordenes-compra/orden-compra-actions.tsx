@@ -27,7 +27,8 @@ export function OrdenCompraActions({ id, estado }: OrdenCompraActionsProps) {
           </DropdownMenuItem>
         </Link>
 
-        {["creado", "recibido-parcial"].includes(estado) && (
+        {/* Solo mostrar editar si está en estado "creada" */}
+        {estado === "creada" && (
           <Link href={`/ordenes-compra/editar/${id}`}>
             <DropdownMenuItem>
               <FileEdit className="mr-2 h-4 w-4" />
@@ -36,7 +37,8 @@ export function OrdenCompraActions({ id, estado }: OrdenCompraActionsProps) {
           </Link>
         )}
 
-        {["creado", "recibido-parcial"].includes(estado) && (
+        {/* Solo mostrar registrar recepción si está confirmada o recibida parcial */}
+        {["confirmada", "recibida-parcial"].includes(estado) && (
           <Link href={`/ordenes-compra/recepcion/${id}`}>
             <DropdownMenuItem>
               <Truck className="mr-2 h-4 w-4" />

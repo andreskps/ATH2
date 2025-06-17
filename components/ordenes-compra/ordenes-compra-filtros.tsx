@@ -61,10 +61,11 @@ export function OrdenesCompraFiltros() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="todos">Todos los estados</SelectItem>
-                    <SelectItem value="creado">Creado</SelectItem>
-                    <SelectItem value="recibido-parcial">Recibido Parcial</SelectItem>
-                    <SelectItem value="recibido">Recibido</SelectItem>
-                    <SelectItem value="cerrado">Cerrado</SelectItem>
+                    <SelectItem value="creada">Creada</SelectItem>
+                    <SelectItem value="confirmada">Confirmada</SelectItem>
+                    <SelectItem value="recibida-parcial">Recibida Parcial</SelectItem>
+                    <SelectItem value="recibida">Recibida</SelectItem>
+                    <SelectItem value="cerrada">Cerrada</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

@@ -1,5 +1,5 @@
 // Definir los tipos
-export type EstadoOrdenCompra = "creado" | "recibido-parcial" | "recibido" | "cerrado"
+export type EstadoOrdenCompra = "creada" | "confirmada" | "recibida-parcial" | "recibida" | "cerrada"
 
 export interface OrdenCompra {
   id: string
@@ -70,7 +70,7 @@ const ordenesCompraEstaticas: OrdenCompra[] = [
     numero: "OC-2023-1001",
     proveedorId: "prov-001",
     proveedorNombre: "Polímeros Industriales S.A.",
-    estado: "creado",
+    estado: "confirmada",
     fechaEmision: "2023-05-15T10:30:00Z",
     fechaEntregaEstimada: "2023-05-30T10:30:00Z",
     usuarioResponsableId: "user-001",
@@ -104,11 +104,20 @@ const ordenesCompraEstaticas: OrdenCompra[] = [
       {
         id: "hist-001-1",
         fecha: "2023-05-15T10:30:00Z",
-        estadoAnterior: "creado",
-        estadoNuevo: "creado",
+        estadoAnterior: "creada",
+        estadoNuevo: "creada",
         usuarioId: "user-001",
         usuarioNombre: "Carlos Rodríguez",
         comentario: "Orden de compra creada",
+      },
+      {
+        id: "hist-001-2",
+        fecha: "2023-05-16T14:20:00Z",
+        estadoAnterior: "creada",
+        estadoNuevo: "confirmada",
+        usuarioId: "user-001",
+        usuarioNombre: "Carlos Rodríguez",
+        comentario: "Orden confirmada y enviada al proveedor",
       },
     ],
     recepciones: [],
@@ -578,6 +587,46 @@ const ordenesCompraEstaticas: OrdenCompra[] = [
     ],
     createdAt: "2023-01-15T14:00:00Z",
     updatedAt: "2023-02-10T15:45:00Z",
+  },
+  {
+    id: "oc-006",
+    numero: "OC-2023-1006",
+    proveedorId: "prov-002",
+    proveedorNombre: "Químicos del Norte",
+    estado: "creada",
+    fechaEmision: "2023-06-01T09:00:00Z",
+    fechaEntregaEstimada: "2023-06-15T09:00:00Z",
+    usuarioResponsableId: "user-001",
+    usuarioResponsableNombre: "Carlos Rodríguez",
+    total: 22500.0,
+    moneda: "MXN",
+    items: [
+      {
+        id: "item-006-1",
+        materiaPrimaId: "mp-003",
+        materiaPrimaNombre: "PET",
+        cantidad: 750,
+        unidad: "kg",
+        precioUnitario: 30.0,
+        subtotal: 22500.0,
+        cantidadRecibida: 0,
+      },
+    ],
+    comentarios: "Orden para nueva línea de productos PET.",
+    historialCambios: [
+      {
+        id: "hist-006-1",
+        fecha: "2023-06-01T09:00:00Z",
+        estadoAnterior: "creada",
+        estadoNuevo: "creada",
+        usuarioId: "user-001",
+        usuarioNombre: "Carlos Rodríguez",
+        comentario: "Orden de compra creada",
+      },
+    ],
+    recepciones: [],
+    createdAt: "2023-06-01T09:00:00Z",
+    updatedAt: "2023-06-01T09:00:00Z",
   },
 ]
 

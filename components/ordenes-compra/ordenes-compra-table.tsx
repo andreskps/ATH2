@@ -9,16 +9,18 @@ import { OrdenCompraActions } from "./orden-compra-actions"
 export async function OrdenesCompraTable() {
   const ordenesCompra = await getOrdenesCompra()
 
-  // Función para obtener el color del badge según el estado
+  // Actualizar la función getEstadoColor para incluir "confirmada":
   const getEstadoColor = (estado: string) => {
     switch (estado) {
-      case "creado":
+      case "creada":
         return "bg-blue-100 text-blue-800 hover:bg-blue-100/80"
-      case "recibido-parcial":
+      case "confirmada":
+        return "bg-purple-100 text-purple-800 hover:bg-purple-100/80"
+      case "recibida-parcial":
         return "bg-amber-100 text-amber-800 hover:bg-amber-100/80"
-      case "recibido":
+      case "recibida":
         return "bg-green-100 text-green-800 hover:bg-green-100/80"
-      case "cerrado":
+      case "cerrada":
         return "bg-gray-100 text-gray-800 hover:bg-gray-100/80"
       default:
         return "bg-gray-100 text-gray-800 hover:bg-gray-100/80"
@@ -50,10 +52,11 @@ export async function OrdenesCompraTable() {
                   <TableCell>{orden.proveedorNombre}</TableCell>
                   <TableCell>
                     <Badge className={getEstadoColor(orden.estado)} variant="outline">
-                      {orden.estado === "creado" && "Creado"}
-                      {orden.estado === "recibido-parcial" && "Recibido Parcial"}
-                      {orden.estado === "recibido" && "Recibido"}
-                      {orden.estado === "cerrado" && "Cerrado"}
+                      {orden.estado === "creada" && "Creada"}
+                      {orden.estado === "confirmada" && "Confirmada"}
+                      {orden.estado === "recibida-parcial" && "Recibida Parcial"}
+                      {orden.estado === "recibida" && "Recibida"}
+                      {orden.estado === "cerrada" && "Cerrada"}
                     </Badge>
                   </TableCell>
                   <TableCell>{format(new Date(orden.fechaEmision), "dd/MM/yyyy", { locale: es })}</TableCell>
