@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { getOrdenCompraById } from "@/lib/data/ordenes-compra-nuevo"
 import { OrdenCompraForm } from "@/components/ordenes-compra-nuevo/orden-compra-form"
-import  BackButton } from "@/components/ui/back-button"
+import  BackButton  from "@/components/ui/back-button"
 
 interface EditarOrdenCompraPageProps {
   params: {

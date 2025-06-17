@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { getOrdenCompraById } from "@/lib/data/ordenes-compra-nuevo"
 import { RecepcionForm } from "@/components/ordenes-compra-nuevo/recepcion-form"
-import { BackButton } from "@/components/ui/back-button"
+import  BackButton from "@/components/ui/back-button"
 
 interface RecepcionPageProps {
   params: {
