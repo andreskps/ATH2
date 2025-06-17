@@ -14,37 +14,37 @@ export function OrdenCompraActions({ id, estado }: OrdenCompraActionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" className="h-8 w-8">
           <MoreHorizontal className="h-4 w-4" />
           <span className="sr-only">Abrir menú</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <Link href={`/ordenes-compra/${id}`}>
-          <DropdownMenuItem>
+      <DropdownMenuContent align="end" className="w-48">
+        <DropdownMenuItem asChild>
+          <Link href={`/ordenes-compra/${id}`} className="flex items-center">
             <Eye className="mr-2 h-4 w-4" />
             Ver detalles
-          </DropdownMenuItem>
-        </Link>
+          </Link>
+        </DropdownMenuItem>
 
         {/* Solo mostrar editar si está en estado "creada" */}
         {estado === "creada" && (
-          <Link href={`/ordenes-compra/editar/${id}`}>
-            <DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href={`/ordenes-compra/editar/${id}`} className="flex items-center">
               <FileEdit className="mr-2 h-4 w-4" />
               Editar
-            </DropdownMenuItem>
-          </Link>
+            </Link>
+          </DropdownMenuItem>
         )}
 
         {/* Solo mostrar registrar recepción si está confirmada o recibida parcial */}
         {["confirmada", "recibida-parcial"].includes(estado) && (
-          <Link href={`/ordenes-compra/recepcion/${id}`}>
-            <DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href={`/ordenes-compra/recepcion/${id}`} className="flex items-center">
               <Truck className="mr-2 h-4 w-4" />
               Registrar recepción
-            </DropdownMenuItem>
-          </Link>
+            </Link>
+          </DropdownMenuItem>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
