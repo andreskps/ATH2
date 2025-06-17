@@ -9,7 +9,7 @@ interface BackButtonProps {
   className?: string
 }
 
-export default function BackButton({ href, className }: BackButtonProps) {
+export function BackButton({ href, className }: BackButtonProps) {
   return (
     <Button variant="ghost" size="icon" asChild className={className}>
       <Link href={href}>
@@ -19,3 +19,5 @@ export default function BackButton({ href, className }: BackButtonProps) {
     </Button>
   )
 }
+
+export { BackButton as default }

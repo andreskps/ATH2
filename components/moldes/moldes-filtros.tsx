@@ -13,7 +13,7 @@ interface MoldesFiltrosProps {
   className?: string
 }
 
-export default function MoldesFiltros({ className }: MoldesFiltrosProps) {
+export function MoldesFiltros({ className }: MoldesFiltrosProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()

@@ -467,6 +467,11 @@ export async function getMateriaPrima() {
   return materiasPrimas
 }
 
+// Add this function after getMateriaPrima():
+export async function getMateriasPrimas() {
+  return materiasPrimas
+}
+
 // Función para obtener una materia prima por ID
 export async function getMateriaPrimaById(id: string) {
   return materiasPrimas.find((mp) => mp.id === id)
