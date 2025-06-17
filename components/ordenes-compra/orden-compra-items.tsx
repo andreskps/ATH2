@@ -1,10 +1,14 @@
-"use client"
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import type { OrdenCompraItem } from "@/lib/data/ordenes-compra"
-import { formatCurrency } from "@/lib/utils"
-import { ArchiveIcon, CheckIcon, XIcon } from "lucide-react"
+
+interface OrdenCompraItem {
+  id: string
+  materiaPrimaNombre: string
+  cantidad: number
+  unidad: string
+  precioUnitario: number
+  subtotal: number
+}
 
 interface OrdenCompraItemsProps {
   items: OrdenCompraItem[]
@@ -12,84 +16,51 @@ interface OrdenCompraItemsProps {
 }
 
 export function OrdenCompraItems({ items, moneda }: OrdenCompraItemsProps) {
+  const total = items.reduce((sum, item) => sum + item.subtotal, 0)
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">Materias Primas</CardTitle>
+        <CardTitle>Productos de la Orden</CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Materia Prima</TableHead>
-              <TableHead className="text-right">Cantidad</TableHead>
-              <TableHead className="text-right">Recibido</TableHead>
-              <TableHead className="text-right">Pendiente</TableHead>
-              <TableHead className="text-right">Precio Unit.</TableHead>
-              <TableHead className="text-right">Subtotal</TableHead>
-              <TableHead className="text-center">Estado</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {items.map((item) => {
-              const pendiente = item.cantidad - item.cantidadRecibida
-              const isCompleto = pendiente === 0
-              const isParcial = item.cantidadRecibida > 0 && pendiente > 0
-
-              return (
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Materia Prima</TableHead>
+                <TableHead className="text-right">Cantidad</TableHead>
+                <TableHead>Unidad</TableHead>
+                <TableHead className="text-right">Precio Unitario</TableHead>
+                <TableHead className="text-right">Subtotal</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell className="font-medium">{item.materiaPrimaNombre}</TableCell>
+                  <TableCell className="text-right">{item.cantidad.toLocaleString("es-ES")}</TableCell>
+                  <TableCell>{item.unidad}</TableCell>
                   <TableCell className="text-right">
-                    {item.cantidad} {item.unidad}
+                    {moneda} {item.precioUnitario.toLocaleString("es-ES", { minimumFractionDigits: 2 })}
                   </TableCell>
-                  <TableCell className="text-right">
-                    {item.cantidadRecibida} {item.unidad}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {pendiente} {item.unidad}
-                  </TableCell>
-                  <TableCell className="text-right">{formatCurrency(item.precioUnitario, moneda)}</TableCell>
-                  <TableCell className="text-right">{formatCurrency(item.subtotal, moneda)}</TableCell>
-                  <TableCell className="text-center">
-                    {isCompleto ? (
-                      <div className="flex justify-center">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
-                          <CheckIcon className="mr-1 h-3 w-3" /> Completado
-                        </span>
-                      </div>
-                    ) : isParcial ? (
-                      <div className="flex justify-center">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
-                          <ArchiveIcon className="mr-1 h-3 w-3" /> Parcial
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="flex justify-center">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
-                          <XIcon className="mr-1 h-3 w-3" /> Pendiente
-                        </span>
-                      </div>
-                    )}
+                  <TableCell className="text-right font-medium">
+                    {moneda} {item.subtotal.toLocaleString("es-ES", { minimumFractionDigits: 2 })}
                   </TableCell>
                 </TableRow>
-              )
-            })}
+              ))}
+            </TableBody>
+          </Table>
+        </div>
 
-            {/* Total row */}
-            <TableRow>
-              <TableCell colSpan={5} className="text-right font-bold">
-                Total:
-              </TableCell>
-              <TableCell className="text-right font-bold">
-                {formatCurrency(
-                  items.reduce((sum, item) => sum + item.subtotal, 0),
-                  moneda,
-                )}
-              </TableCell>
-              <TableCell />
-            </TableRow>
-          </TableBody>
-        </Table>
+        <div className="flex justify-end mt-4 pt-4 border-t">
+          <div className="text-right">
+            <p className="text-sm text-muted-foreground">Total de la orden</p>
+            <p className="text-2xl font-bold">
+              {moneda} {total.toLocaleString("es-ES", { minimumFractionDigits: 2 })}
+            </p>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

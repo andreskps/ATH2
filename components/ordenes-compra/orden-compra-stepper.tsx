@@ -1,115 +1,119 @@
 "use client"
 
-import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { Check, Clock, Package, Truck, X } from "lucide-react"
+import { CheckCircle, Circle, Package } from "lucide-react"
 import { cn } from "@/lib/utils"
-import type { EstadoOrdenCompra } from "@/lib/data/ordenes-compra"
 
 interface OrdenCompraStepperProps {
-  estadoActual: EstadoOrdenCompra
-  className?: string
+  estado: string
 }
 
-const pasos = [
-  {
-    id: "creada",
-    titulo: "Creada",
-    descripcion: "Orden registrada",
-    icono: Clock,
-  },
-  {
-    id: "confirmada",
-    titulo: "Confirmada",
-    descripcion: "Enviada al proveedor",
-    icono: Check,
-  },
-  {
-    id: "recibida-parcial",
-    titulo: "Recibida Parcial",
-    descripcion: "Recepción parcial",
-    icono: Package,
-  },
-  {
-    id: "recibida",
-    titulo: "Recibida",
-    descripcion: "Recepción completa",
-    icono: Truck,
-  },
-  {
-    id: "cerrada",
-    titulo: "Cerrada",
-    descripcion: "Proceso finalizado",
-    icono: X,
-  },
-]
+export function OrdenCompraStepper({ estado }: OrdenCompraStepperProps) {
+  const steps = [
+    {
+      key: "creada",
+      label: "Creada",
+      icon: Circle,
+      description: "Orden creada y en edición",
+    },
+    {
+      key: "confirmada",
+      label: "Confirmada",
+      icon: CheckCircle,
+      description: "Orden confirmada y enviada al proveedor",
+    },
+    {
+      key: "recibida-parcial",
+      label: "Recibida Parcial",
+      icon: Package,
+      description: "Algunos productos han sido recibidos",
+    },
+    {
+      key: "recibida",
+      label: "Recibida",
+      icon: CheckCircle,
+      description: "Todos los productos han sido recibidos",
+    },
+    {
+      key: "cerrada",
+      label: "Cerrada",
+      icon: CheckCircle,
+      description: "Orden completada y cerrada",
+    },
+  ]
 
-export function OrdenCompraStepper({ estadoActual, className }: OrdenCompraStepperProps) {
-  const getEstadoIndex = (estado: EstadoOrdenCompra) => {
-    return pasos.findIndex((paso) => paso.id === estado)
+  const getCurrentStepIndex = () => {
+    return steps.findIndex((step) => step.key === estado)
   }
 
-  const estadoIndex = getEstadoIndex(estadoActual)
+  const currentStepIndex = getCurrentStepIndex()
 
   const getStepStatus = (stepIndex: number) => {
-    if (stepIndex < estadoIndex) return "completed"
-    if (stepIndex === estadoIndex) return "current"
-    return "upcoming"
+    if (stepIndex < currentStepIndex) return "completed"
+    if (stepIndex === currentStepIndex) return "current"
+    return "pending"
   }
 
   const getStepColor = (status: string) => {
     switch (status) {
       case "completed":
-        return "bg-green-500 text-white"
+        return "text-green-600 bg-green-100"
       case "current":
-        return "bg-blue-500 text-white"
+        return "text-blue-600 bg-blue-100"
       default:
-        return "bg-gray-200 text-gray-500"
+        return "text-gray-400 bg-gray-100"
     }
   }
 
   return (
-    <Card className={className}>
+    <Card>
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
-          {pasos.map((paso, index) => {
+          {steps.map((step, index) => {
             const status = getStepStatus(index)
-            const Icon = paso.icono
-            const isLast = index === pasos.length - 1
+            const Icon = step.icon
+            const isLast = index === steps.length - 1
 
             return (
-              <div key={paso.id} className="flex items-center">
+              <div key={step.key} className="flex items-center flex-1">
                 <div className="flex flex-col items-center">
                   <div
                     className={cn(
-                      "flex h-10 w-10 items-center justify-center rounded-full border-2 transition-colors",
+                      "flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors",
                       getStepColor(status),
+                      status === "current" && "border-blue-600",
+                      status === "completed" && "border-green-600",
+                      status === "pending" && "border-gray-300",
                     )}
                   >
-                    <Icon className="h-5 w-5" />
+                    <Icon className="w-5 h-5" />
                   </div>
                   <div className="mt-2 text-center">
-                    <p className="text-sm font-medium">{paso.titulo}</p>
-                    <p className="text-xs text-muted-foreground">{paso.descripcion}</p>
+                    <p
+                      className={cn(
+                        "text-sm font-medium",
+                        status === "current" && "text-blue-600",
+                        status === "completed" && "text-green-600",
+                        status === "pending" && "text-gray-400",
+                      )}
+                    >
+                      {step.label}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1 max-w-[120px]">{step.description}</p>
                   </div>
                 </div>
+
                 {!isLast && (
                   <div
                     className={cn(
-                      "mx-4 h-0.5 w-16 transition-colors",
-                      status === "completed" ? "bg-green-500" : "bg-gray-200",
+                      "flex-1 h-0.5 mx-4 transition-colors",
+                      index < currentStepIndex ? "bg-green-600" : "bg-gray-300",
                     )}
                   />
                 )}
               </div>
             )
           })}
-        </div>
-
-        <div className="mt-4 flex justify-center">
-          <Badge variant={estadoActual === "cerrada" ? "destructive" : "default"} className="text-sm">
-            Estado actual: {pasos.find((p) => p.id === estadoActual)?.titulo}
-          </Badge>
         </div>
       </CardContent>
     </Card>

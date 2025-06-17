@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,86 +9,79 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Check, Loader2 } from "lucide-react"
+import { CheckCircle, Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 interface ConfirmarOrdenDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
   ordenId: string
   numeroOrden: string
-  children: React.ReactNode
 }
 
-export function ConfirmarOrdenDialog({ ordenId, numeroOrden, children }: ConfirmarOrdenDialogProps) {
-  const [open, setOpen] = useState(false)
-  const [comentario, setComentario] = useState("")
-  const [isConfirming, setIsConfirming] = useState(false)
+export function ConfirmarOrdenDialog({ open, onOpenChange, ordenId, numeroOrden }: ConfirmarOrdenDialogProps) {
+  const [comentarios, setComentarios] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   const handleConfirmar = async () => {
-    setIsConfirming(true)
+    setIsLoading(true)
 
     try {
-      // Aquí iría la lógica para confirmar la orden
-      console.log("Confirmando orden:", { ordenId, comentario })
-
-      // Simular retraso de red
+      // Simular llamada a API para confirmar la orden
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
-      // Cerrar el diálogo y refrescar la página
-      setOpen(false)
-      router.refresh()
+      // Aquí iría la llamada real a la API
+      // await confirmarOrdenCompra(ordenId, comentarios)
+
+      toast.success(`Orden de compra #${numeroOrden} confirmada exitosamente`)
+      onOpenChange(false)
+      router.refresh() // Refrescar la página para mostrar el nuevo estado
     } catch (error) {
-      console.error("Error al confirmar la orden:", error)
+      toast.error("Error al confirmar la orden de compra")
     } finally {
-      setIsConfirming(false)
+      setIsLoading(false)
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Confirmar Orden de Compra</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <CheckCircle className="h-5 w-5 text-green-600" />
+            Confirmar Orden de Compra
+          </DialogTitle>
           <DialogDescription>
-            ¿Estás seguro de que deseas confirmar la orden {numeroOrden}? Una vez confirmada, la orden será enviada al
-            proveedor y no podrá ser editada.
+            ¿Estás seguro de que deseas confirmar la orden de compra #{numeroOrden}? Una vez confirmada, no podrás
+            editarla.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="comentario">Comentario de confirmación (opcional)</Label>
+        <div className="grid gap-4 py-4">
+          <div className="grid gap-2">
+            <Label htmlFor="comentarios">Comentarios de confirmación (opcional)</Label>
             <Textarea
-              id="comentario"
-              placeholder="Agregar comentario sobre la confirmación..."
-              value={comentario}
-              onChange={(e) => setComentario(e.target.value)}
-              className="min-h-[80px]"
+              id="comentarios"
+              placeholder="Agregar comentarios sobre la confirmación..."
+              value={comentarios}
+              onChange={(e) => setComentarios(e.target.value)}
+              rows={3}
             />
           </div>
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)} disabled={isConfirming}>
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
             Cancelar
           </Button>
-          <Button onClick={handleConfirmar} disabled={isConfirming}>
-            {isConfirming ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Confirmando...
-              </>
-            ) : (
-              <>
-                <Check className="mr-2 h-4 w-4" />
-                Confirmar Orden
-              </>
-            )}
+          <Button onClick={handleConfirmar} disabled={isLoading}>
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Confirmar Orden
           </Button>
         </DialogFooter>
       </DialogContent>

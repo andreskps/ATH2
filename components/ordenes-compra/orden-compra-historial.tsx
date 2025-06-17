@@ -1,18 +1,16 @@
-"use client"
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { formatDate } from "@/lib/utils"
-import { ClockIcon, UserIcon } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { format } from "date-fns"
+import { es } from "date-fns/locale"
+import { CheckCircle, Circle, Clock, Package } from "lucide-react"
 
-// Podríamos extender la interfaz de la orden compra en el archivo de tipos,
-// pero por simplicidad lo definimos aquí
 interface HistorialCambio {
   id: string
-  fecha: string
-  estadoAnterior: string
+  estadoAnterior: string | null
   estadoNuevo: string
+  fecha: string
   usuarioNombre: string
-  comentario?: string
+  comentarios?: string
 }
 
 interface OrdenCompraHistorialProps {
@@ -20,17 +18,52 @@ interface OrdenCompraHistorialProps {
 }
 
 export function OrdenCompraHistorial({ historial }: OrdenCompraHistorialProps) {
-  // Función para formatear el estado para mostrar
-  const formatearEstado = (estado: string) => {
+  const getEstadoIcon = (estado: string) => {
     switch (estado) {
-      case "creado":
-        return "Creado"
-      case "recibido-parcial":
-        return "Recibido Parcial"
-      case "recibido":
-        return "Recibido"
-      case "cerrado":
-        return "Cerrado"
+      case "creada":
+        return <Circle className="h-4 w-4" />
+      case "confirmada":
+        return <CheckCircle className="h-4 w-4" />
+      case "recibida-parcial":
+        return <Package className="h-4 w-4" />
+      case "recibida":
+        return <CheckCircle className="h-4 w-4" />
+      case "cerrada":
+        return <CheckCircle className="h-4 w-4" />
+      default:
+        return <Clock className="h-4 w-4" />
+    }
+  }
+
+  const getEstadoColor = (estado: string) => {
+    switch (estado) {
+      case "creada":
+        return "bg-blue-100 text-blue-800"
+      case "confirmada":
+        return "bg-purple-100 text-purple-800"
+      case "recibida-parcial":
+        return "bg-amber-100 text-amber-800"
+      case "recibida":
+        return "bg-green-100 text-green-800"
+      case "cerrada":
+        return "bg-gray-100 text-gray-800"
+      default:
+        return "bg-gray-100 text-gray-800"
+    }
+  }
+
+  const getEstadoTexto = (estado: string) => {
+    switch (estado) {
+      case "creada":
+        return "Creada"
+      case "confirmada":
+        return "Confirmada"
+      case "recibida-parcial":
+        return "Recibida Parcial"
+      case "recibida":
+        return "Recibida"
+      case "cerrada":
+        return "Cerrada"
       default:
         return estado
     }
@@ -39,52 +72,44 @@ export function OrdenCompraHistorial({ historial }: OrdenCompraHistorialProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">Historial de Cambios</CardTitle>
+        <CardTitle>Historial de Cambios</CardTitle>
       </CardHeader>
       <CardContent>
-        {historial.length === 0 ? (
-          <p className="text-muted-foreground">No hay cambios registrados.</p>
-        ) : (
-          <div className="relative">
-            {/* Línea del tiempo */}
-            <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-muted-foreground/30 ml-6" />
+        <div className="space-y-4">
+          {historial.map((cambio, index) => (
+            <div key={cambio.id} className="flex items-start space-x-4 pb-4 border-b last:border-b-0">
+              <div className="flex-shrink-0 mt-1">
+                <div className={`p-2 rounded-full ${getEstadoColor(cambio.estadoNuevo)}`}>
+                  {getEstadoIcon(cambio.estadoNuevo)}
+                </div>
+              </div>
 
-            <ul className="space-y-4">
-              {historial.map((cambio) => (
-                <li key={cambio.id} className="relative pl-14">
-                  {/* Círculo de punto de tiempo */}
-                  <div className="absolute left-0 top-0 w-3 h-3 rounded-full bg-primary ring-4 ring-background ml-5 mt-1.5" />
-
-                  <div className="bg-muted p-4 rounded-lg">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="flex items-center">
-                        <ClockIcon className="h-4 w-4 mr-2 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">{formatDate(cambio.fecha)}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <UserIcon className="h-4 w-4 mr-2 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">{cambio.usuarioNombre}</span>
-                      </div>
-                    </div>
-
-                    <div className="mb-2">
-                      <span className="font-medium">
-                        Cambio de estado: {formatearEstado(cambio.estadoAnterior)} →{" "}
-                        {formatearEstado(cambio.estadoNuevo)}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Badge className={getEstadoColor(cambio.estadoNuevo)} variant="outline">
+                      {getEstadoTexto(cambio.estadoNuevo)}
+                    </Badge>
+                    {cambio.estadoAnterior && (
+                      <span className="text-sm text-muted-foreground">
+                        desde {getEstadoTexto(cambio.estadoAnterior)}
                       </span>
-                    </div>
-
-                    {cambio.comentario && (
-                      <div className="text-sm mt-2 text-muted-foreground border-t pt-2 border-muted-foreground/20">
-                        {cambio.comentario}
-                      </div>
                     )}
                   </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+                  <time className="text-sm text-muted-foreground">
+                    {format(new Date(cambio.fecha), "dd/MM/yyyy HH:mm", { locale: es })}
+                  </time>
+                </div>
+
+                <p className="text-sm text-muted-foreground mt-1">Por {cambio.usuarioNombre}</p>
+
+                {cambio.comentarios && (
+                  <p className="text-sm mt-2 p-2 bg-muted rounded text-muted-foreground">{cambio.comentarios}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       </CardContent>
     </Card>
   )
