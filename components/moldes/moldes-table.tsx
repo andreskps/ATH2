@@ -428,7 +428,7 @@ export default function MoldesTable() {
                             <AlertDialogHeader>
                               <AlertDialogTitle>¿Eliminar molde permanentemente?</AlertDialogTitle>
                               <AlertDialogDescription>
-                                Esta acción no se puede deshacer. Se eliminará permanentemente el molde del sistema.
+                                Esta acci��n no se puede deshacer. Se eliminará permanentemente el molde del sistema.
                                 {deleteError && (
                                   <div className="mt-2 rounded-md bg-red-50 p-2 text-red-600">{deleteError}</div>
                                 )}

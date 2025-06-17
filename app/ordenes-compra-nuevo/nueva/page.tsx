@@ -1,5 +1,5 @@
 import { OrdenCompraForm } from "@/components/ordenes-compra-nuevo/orden-compra-form"
-import { BackButton } from "@/components/ui/back-button"
+import  BackButton  from "@/components/ui/back-button"
 
 export default function NuevaOrdenCompraPage() {
   return (
