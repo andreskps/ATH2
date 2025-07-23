@@ -105,6 +105,19 @@ const productosData: Producto[] = [
         unidad: "mm/s",
       },
     ],
+    // Materias primas necesarias para este producto
+    materiasPrimas: [
+      {
+        id: "mp-2", // PET Cristal
+        cantidadPorUnidad: 0.0155, // 15.5g por unidad
+        unidad: "kg",
+      },
+      {
+        id: "mp-4", // Aditivo UV
+        cantidadPorUnidad: 0.0001, // 0.1g por unidad
+        unidad: "kg",
+      },
+    ],
   },
   {
     id: 2,
@@ -169,6 +182,18 @@ const productosData: Producto[] = [
         unidad: "bar",
       },
     ],
+    materiasPrimas: [
+      {
+        id: "mp-1", // PP Transparente
+        cantidadPorUnidad: 0.0028, // 2.8g por unidad
+        unidad: "kg",
+      },
+      {
+        id: "mp-5", // Colorante Azul
+        cantidadPorUnidad: 0.00005, // 0.05g por unidad
+        unidad: "kg",
+      },
+    ],
   },
   {
     id: 3,
@@ -223,6 +248,13 @@ const productosData: Producto[] = [
         unidad: "°C",
       },
     ],
+    materiasPrimas: [
+      {
+        id: "mp-1", // PP Transparente
+        cantidadPorUnidad: 0.0452, // 45.2g por unidad
+        unidad: "kg",
+      },
+    ],
   },
   {
     id: 4,
@@ -266,6 +298,13 @@ const productosData: Producto[] = [
         nombre: "Zona 1",
         valor: 240,
         unidad: "°C",
+      },
+    ],
+    materiasPrimas: [
+      {
+        id: "mp-3", // HDPE Negro
+        cantidadPorUnidad: 0.0285, // 28.5g por unidad
+        unidad: "kg",
       },
     ],
   },
@@ -313,6 +352,13 @@ const productosData: Producto[] = [
         unidad: "°C",
       },
     ],
+    materiasPrimas: [
+      {
+        id: "mp-2", // PET Cristal
+        cantidadPorUnidad: 0.0123, // 12.3g por unidad
+        unidad: "kg",
+      },
+    ],
   },
 ]
 
@@ -326,6 +372,11 @@ export function getProductos() {
 // Obtener un producto por su ID
 export function getProductoById(id: number) {
   return productosData.find((producto) => producto.id === id)
+}
+
+// Obtener un producto por su código
+export function getProductoByCodigo(codigo: string) {
+  return productosData.find((producto) => producto.codigo === codigo)
 }
 
 // Verificar si un código ya existe

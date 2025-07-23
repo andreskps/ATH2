@@ -50,6 +50,12 @@ export interface ParametroInyeccion {
   unidad: string
 }
 
+export interface MateriaPrimaProducto {
+  id: string // ID de la materia prima
+  cantidadPorUnidad: number // Cantidad necesaria por unidad de producto
+  unidad: string // Unidad de medida
+}
+
 export interface Producto {
   id: number
   codigo: string
@@ -72,6 +78,7 @@ export interface Producto {
   especificaciones: EspecificacionTecnica[]
   parametrosInyeccion: ParametroInyeccion[]
   maquinasCompatibles?: number[] // Añadimos este campo para almacenar los IDs de las máquinas compatibles
+  materiasPrimas?: MateriaPrimaProducto[] // Materias primas necesarias para este producto
 }
 
 // Resto de tipos existentes...

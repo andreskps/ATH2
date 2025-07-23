@@ -161,13 +161,43 @@ export const peticionesMaterial: PeticionMaterial[] = [
   },
 ]
 
-// Datos para los dropdowns
+// Datos para los dropdowns - Actualizados con códigos de productos reales
 export const ordenesProduccion = [
-  { id: "OP-2025-001", producto: "Vaso 200ml Transparente", cantidad: 5000, fechaProgramada: "2025-01-30" },
-  { id: "OP-2025-002", producto: "Botella 500ml Azul", cantidad: 3000, fechaProgramada: "2025-01-28" },
-  { id: "OP-2025-003", producto: "Bandeja Rectangular", cantidad: 2000, fechaProgramada: "2025-02-01" },
-  { id: "OP-2025-004", producto: "Tapa Rosca 28mm", cantidad: 10000, fechaProgramada: "2025-02-03" },
-  { id: "OP-2025-005", producto: "Envase 1L Transparente", cantidad: 1500, fechaProgramada: "2025-02-05" },
+  {
+    id: "OP-2025-001",
+    producto: "Botella PET 500ml",
+    codigoProducto: "PL-001",
+    cantidad: 5000,
+    fechaProgramada: "2025-01-30",
+  },
+  {
+    id: "OP-2025-002",
+    producto: "Tapa rosca estándar",
+    codigoProducto: "PL-002",
+    cantidad: 3000,
+    fechaProgramada: "2025-01-28",
+  },
+  {
+    id: "OP-2025-003",
+    producto: "Contenedor rectangular 1L",
+    codigoProducto: "PL-003",
+    cantidad: 2000,
+    fechaProgramada: "2025-02-01",
+  },
+  {
+    id: "OP-2025-004",
+    producto: "Botella HDPE 1L",
+    codigoProducto: "PL-004",
+    cantidad: 10000,
+    fechaProgramada: "2025-02-03",
+  },
+  {
+    id: "OP-2025-005",
+    producto: "Envase cosmético 120ml",
+    codigoProducto: "PL-005",
+    cantidad: 1500,
+    fechaProgramada: "2025-02-05",
+  },
 ]
 
 export const materiasPrimasDisponibles = [
